@@ -56,6 +56,9 @@ end
 function [E, O] = edgeBoxesImg( I, model, o )
 % Generate Edge Boxes object proposals in single image.
 if(all(ischar(I))), I=imread(I); end
+if length(size(I)) == 2
+    I = cat(3, I, I, I);
+end
 model.opts.nms=0; [E,O]=edgesDetect(I,model);
 if(0), E=gradientMag(convTri(single(I),4)); E=E/max(E(:)); end
 E=edgesNmsMex(E,O,2,0,1,model.opts.nThreads);
